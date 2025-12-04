@@ -1,0 +1,12 @@
+[project]
+name = "weather-parser-notiefer"
+version = "0.1.0"
+description = "Smart Weather-Parser with notification system"
+readme = "README.md"
+authors = [
+    {name = "Milana Melnikova", email = "melnikova.milana2020@mail.ru"},
+]
+keywords = ["weather", "parser", "notifications", "openweathermap"]
+
+requires-python = ">=3.12"
+dependencies = []
