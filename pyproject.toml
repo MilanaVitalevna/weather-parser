@@ -9,7 +9,10 @@ authors = [
 keywords = ["weather", "parser", "notifications", "openweathermap"]
 
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "dotenv>=0.9.9",
+    "requests>=2.32.5",
+]
 
 [dependency-groups]
 dev = [
