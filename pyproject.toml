@@ -1,10 +1,14 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "weather-parser-notiefer"
 version = "0.1.0"
 description = "Smart Weather-Parser with notification system"
 readme = "README.md"
 authors = [
-    {name = "Milana Melnikova", email = "melnikova.milana2020@mail.ru"},
+    { name = "Milana Melnikova", email = "melnikova.milana2020@mail.ru" },
 ]
 keywords = ["weather", "parser", "notifications", "openweathermap"]
 
@@ -16,9 +20,16 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "hatchling>=1.28.0",
     "pre-commit>=4.5.0",
     "ruff>=0.14.7",
 ]
+
+[project.scripts]
+weather = "src.main:get_current_weather"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
 
 [tool.ruff]
 line-length = 120
@@ -26,13 +37,13 @@ line-length = 120
 [tool.ruff.lint]
 preview = true
 select = [
-    "E",   # pycodestyle errors
-    "W",   # pycodestyle warnings
-    "F",   # Pyflakes
-    "I",   # isort
-    "UP",  # pyupgrade
-    "S",   # flake8-bandit (security)
-    "B",   # flake8-bugbear (лучшие практики)
-    "C4",  # flake8-comprehensions (генераторы)
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # Pyflakes
+    "I", # isort
+    "UP", # pyupgrade
+    "S", # flake8-bandit (security)
+    "B", # flake8-bugbear (лучшие практики)
+    "C4", # flake8-comprehensions (генераторы)
     "SIM", # flake8-simplify (упрощение)
 ]
