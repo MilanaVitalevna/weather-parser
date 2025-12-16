@@ -9,6 +9,9 @@ install:  ## Install all dependencies (with dev)
 install-no-dev:  ## Install only production dependencies (no dev)
 	uv sync --no-dev
 
+run:  # Run app Weather Parser Notifier
+	uv run weather
+
 lint:  ## Check code for errors and style issues
 	uv run ruff check .
 

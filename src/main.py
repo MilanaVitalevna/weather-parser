@@ -1,57 +1,44 @@
-import os
+from requests.exceptions import RequestException
 
-import requests
-from dotenv import load_dotenv
-
-load_dotenv()
+from src.api_client import OpenWeatherMapApiClient
+from src.config_loader import Config, ConfigLoader
+from src.data_parser import WeatherData, parse_openweathermap_response
+from src.weather_display import display_error, display_weather
 
 
 def get_current_weather():
+    """
+    Получает и отображает текущую погоду.
+    Обрабатывает исключения на верхнем уровне.
+    """
     try:
-        api_key = os.getenv("OPENWEATHER_API_KEY")
-        base_url = os.getenv("OPENWEATHER_BASE_URL")
-        city = os.getenv("DEFAULT_CITY", "Moscow")
-        lang = os.getenv("DEFAULT_LANGUAGE", "ru")
-        units = os.getenv("DEFAULT_UNITS", "metric")
+        # 1. Загрузка начальных настроек приложения из переменных окружения ENV
+        print("🔧 Загрузка настроек приложения погоды...")
+        config: Config = ConfigLoader.load()
 
-        if not api_key:
-            print("❌ Ошибка: OPENWEATHER_API_KEY не найден в .env файле")
-            return
+        # 2. Получение полного списка неразобранных данных от API OpenWeatherMap
+        print("🌍 Запрашиваю погоду на сервере OpenWeather...")
+        api_client: OpenWeatherMapApiClient = OpenWeatherMapApiClient(config)
+        raw_json: dict = api_client.fetch_weather_json()
 
-        url = f"{base_url}/weather"
-        params = {"q": city, "appid": api_key, "lang": lang, "units": units}
+        # 3. Отбор данных из полученного списка в подготовленный вид для вывода
+        print("🔍 Обработка и подготовка данных для вывода...")
+        weather_data: WeatherData = parse_openweathermap_response(raw_json)
 
-        print("🌍 Запрашиваю погоду на сервере OpenWeatherMap...")
+        # 4. Вывод подготовленных данных для пользователя
+        display_weather(weather_data)
 
-        response = requests.get(url, params=params, timeout=30)
+    except ValueError as e:
+        # Ошибки начальной настройки или разбора данных
+        display_error(f"Ошибка конфигурации или данных: {e}")
 
-        if response.status_code == 200:
-            data = response.json()
-            temp = data["main"]["temp"]
-            description = data["weather"][0]["description"]
-            feels_like = data["main"]["feels_like"]
-            humidity = data["main"]["humidity"]
-            wind_speed = data["wind"]["speed"]
-            print(f"✅ Текущая погода в городе {city}:")
-            print(f"✅ Температура: {temp}°C")
-            print(f"✅ Ощущается как: {feels_like}")
-            print(f"✅ Описание: {description}")
-            print(f"✅ Влажность: {humidity}%")
-            print(f"✅ Скорость ветра: {wind_speed} м/с")
-        elif response.status_code == 401:
-            print("❌ Ошибка 401: Неверный API ключ")
-        elif response.status_code == 404:
-            print(f"❌ Ошибка 404: Город '{city}' не найден")
-        else:
-            print(f"❌ Ошибка API: {response.status_code}")
-            print(f"   Ответ: {response.text[:100]}...")
+    except RequestException as e:
+        # Обработка всех ошибок сети или API OpenWeather
+        display_error(f"Ошибка при обращении к серверу погоды: {e}")
 
-    except requests.exceptions.Timeout:
-        print("❌ Таймаут: Превышено время ожидания ответа от сервера")
-    except requests.exceptions.ConnectionError:
-        print("❌ Ошибка соединения: Проверьте интернет-подключение")
     except Exception as e:
-        print(f"❌ Неожиданная ошибка: {type(e).__name__}: {e}")
+        # Все остальные непредвиденные ошибки
+        display_error(f"Неожиданная ошибка: {e}")
 
 
 if __name__ == "__main__":
