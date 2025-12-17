@@ -15,6 +15,7 @@ keywords = ["weather", "parser", "notifications", "openweathermap"]
 requires-python = ">=3.12"
 dependencies = [
     "dotenv>=0.9.9",
+    "pyqt6>=6.10.1",
     "requests>=2.32.5",
 ]
 
