@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "weather-parser-notiefer"
-version = "0.1.0"
+version = "0.2.0"
 description = "Smart Weather-Parser with notification system"
 readme = "README.md"
 authors = [
@@ -27,7 +27,8 @@ dev = [
 ]
 
 [project.scripts]
-weather = "src.main:get_current_weather"
+weather-cli = "src.cli:main"  # Для CLI версии
+weather-gui = "src.gui.main_window:main"  # Для GUI версии
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]

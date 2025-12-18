@@ -8,6 +8,12 @@ dotenv==0.9.9
     # via weather-parser-notiefer (pyproject.toml)
 idna==3.11
     # via requests
+pyqt6==6.10.1
+    # via weather-parser-notiefer (pyproject.toml)
+pyqt6-qt6==6.10.1
+    # via pyqt6
+pyqt6-sip==13.10.3
+    # via pyqt6
 python-dotenv==1.2.1
     # via dotenv
 requests==2.32.5

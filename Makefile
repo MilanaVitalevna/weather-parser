@@ -9,8 +9,14 @@ install:  ## Install all dependencies (with dev)
 install-no-dev:  ## Install only production dependencies (no dev)
 	uv sync --no-dev
 
-run:  # Run app Weather Parser Notifier
-	uv run weather
+run:  ## Run app Weather Parser Notifier (GUI by default)
+	uv run python -m src.main
+
+run-cli:  ## Run app in CLI mode
+	uv run weather-cli
+
+run-gui:  ## Run app in GUI mode
+	uv run weather-gui
 
 lint:  ## Check code for errors and style issues
 	uv run ruff check .

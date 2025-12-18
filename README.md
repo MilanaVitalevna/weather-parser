@@ -29,7 +29,7 @@
 
 - **`pyproject.toml`** — единый файл конфигурации проекта (стандартизирован PEP 518, 621, 660), который заменяет
   устаревшие `setup.py` и `requirements.txt`.
-- **`uv.lock`** — автоматически генерируемый файл с точными версиями всех зависимостей для воспроизводимости сборки.
+- **`uv.lock`** — автоматически создаваемый файл с точными версиями всех зависимостей для воспроизводимости сборки.
 
 **Быстрая установка:**
 
@@ -45,12 +45,52 @@ uv pip compile pyproject.toml --output-file=requirements.txt
 
 ### 🔧 Конфигурация
 
-Создайте файл .env на основе .env.example
+Создайте файл `.env` на основе `.env.example`
 
 ### ▶️ Запуск приложения
 
 ```bash
-make run # если make не установлен, тогда напрямую - uv run weather
+# запуск графической версии
+make run # если make не установлен, тогда напрямую - uv run python -m src.main
+
+# запуск консольной версии
+make run-cli # если make не установлен, тогда напрямую - uv run weather-cli
+```
+
+## 📁 Архитектура проекта
+
+```text
+weather-parser-notifier/
+├── src/
+│   ├── __init__.py
+│   ├── main.py              # Точка входа (CLI/GUI выбор)
+│   ├── cli.py               # Консольная версия
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── config_loader.py
+│   │   ├── api_client.py
+│   │   ├── data_parser.py
+│   │   └── weather_service.py
+│   ├── gui/
+│   │   ├── __init__.py
+│   │   ├── main_window.py
+│   │   ├── constants.py
+│   │   ├── resource_manager.py
+│   │   └── resources/
+│   │       └── styles/
+│   │           └── main.qss
+│   └── utils/
+│       ├── __init__.py
+│       └── pressure_converter.py
+├── .env.example
+├── .gitignore
+├── .pre-commit-config.yaml
+├── .python-version
+├── Makefile
+├── README.md
+├── pyproject.toml
+├── requirements.txt
+└── uv.lock
 ```
 
 ## 🙏 Благодарности

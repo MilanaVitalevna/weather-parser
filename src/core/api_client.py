@@ -3,7 +3,7 @@
 import requests
 from requests import Response
 
-from src.config_loader import Config
+from src.core.config_loader import Config
 
 
 class OpenWeatherMapApiClient:
