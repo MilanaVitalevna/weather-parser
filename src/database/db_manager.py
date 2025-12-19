@@ -264,21 +264,29 @@ class DatabaseManager:
         """Получает последние записи о погоде.
 
         Args:
-            limit: Максимальное количество записей
+            limit: Максимальное количество записей (0 = все записи)
 
         Returns:
             Список последних записей
         """
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                """
-                SELECT * FROM weather_history
-                ORDER BY timestamp DESC
-                LIMIT ?
-            """,
-                (limit,),
-            )
+
+            if limit == 0:
+                # Получаем все записи
+                cursor.execute("""
+                    SELECT * FROM weather_history
+                    ORDER BY timestamp DESC
+                """)
+            else:
+                cursor.execute(
+                    """
+                    SELECT * FROM weather_history
+                    ORDER BY timestamp DESC
+                    LIMIT ?
+                """,
+                    (limit,),
+                )
 
             records = []
             for row in cursor.fetchall():
@@ -397,12 +405,28 @@ class DatabaseManager:
             cursor.execute("SELECT COUNT(*) as count FROM weather_history")
             return cursor.fetchone()["count"]
 
-    def clear_history(self) -> None:
-        """Очищает всю историю запросов."""
-        with self._get_connection() as conn:
-            conn.execute("DELETE FROM issued_notifications")
-            conn.execute("DELETE FROM weather_history")
-            conn.execute("VACUUM")  # Освобождаем место
+    def clear_history(self) -> bool:
+        """Очищает всю историю запросов.
+
+        Returns:
+            True если успешно, False если ошибка
+        """
+        try:
+            with self._get_connection() as conn:
+                # Удаляем данные в правильном порядке (сначала дочерние таблицы)
+                conn.execute("DELETE FROM issued_notifications")
+                conn.execute("DELETE FROM weather_history")
+
+            # VACUUM должен быть вне транзакции
+            conn = sqlite3.connect(self.db_path)
+            conn.execute("VACUUM")
+            conn.close()
+
+            return True
+
+        except Exception as e:
+            print(f"Ошибка очистки истории: {e}")
+            return False
 
 
 # Глобальный экземпляр для использования во всем приложении

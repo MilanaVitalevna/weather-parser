@@ -4,17 +4,19 @@
 WINDOW_TITLE = "🌤️ Weather Parser Notifier"
 MAIN_TITLE = "Умный парсер погоды с уведомлениями"
 
-# Размеры окна
-WINDOW_WIDTH = 500
-WINDOW_HEIGHT = 400
+# Размеры окна (теперь с историей)
+WINDOW_WIDTH = 600
+WINDOW_HEIGHT = 750
 WINDOW_X = 100
-WINDOW_Y = 100
+WINDOW_Y = 50
 
 # Тайминги
 TIMER_DELAY_MS = 100  # Задержка для неблокирующего запроса
 
 # Кнопки
 BTN_GET_WEATHER = "🌍 Узнать погоду на сегодня"
+BTN_CLEAR_HISTORY = "🗑️ Очистить историю"
+BTN_EXPORT_HISTORY = "📈 Экспорт CSV"
 
 # Статусы
 STATUS_READY = "Готово к работе"
@@ -31,13 +33,10 @@ PLACEHOLDER_WEATHER = "Здесь появится информация о по�
 ERROR_SERVICE_NOT_INIT = "Сервис погоды не инициализирован"
 ERROR_TITLE = "Ошибка"
 
-# Форматы
-WEATHER_TEMPLATE = """🌤 ПОГОДА В ГОРОДЕ {city}
-══════════════════════════════════════════
-🌡️ Температура:     {temperature}°C
-🤔 Ощущается как:   {feels_like}°C
-💧 Влажность:       {humidity}%
-📊 Давление:        {pressure_mmhg} мм рт. ст. ({pressure_hpa} гПа)
-☁️ Описание:        {description}
-💨 Скорость ветра:  {wind_speed:.1f} м/с
-══════════════════════════════════════════"""
+# История
+HISTORY_TITLE = "📊 Последние запросы"
+HISTORY_EMPTY = "История запросов пуста"
+
+# Колонки таблицы истории
+HISTORY_COLUMNS = ["Время", "Температура", "Погода"]
+HISTORY_COLUMN_WIDTHS = [120, 120, 200]  # Ширина колонок

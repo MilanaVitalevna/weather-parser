@@ -28,6 +28,9 @@ venv.bak/
 *.db
 *.sqlite3
 
+# Exports
+data/exports/*
+
 # Environment variables
 .env
 .env.local

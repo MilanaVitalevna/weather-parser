@@ -85,6 +85,7 @@ weather-parser-notifier/
 │   │   │       └── main.qss
 │   │   ├── __init__.py
 │   │   ├── constants.py
+│   │   ├── history_manager.py
 │   │   ├── main_window.py
 │   │   └── resource_manager.py
 │   ├── notifications/
