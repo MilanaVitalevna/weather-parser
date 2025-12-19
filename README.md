@@ -61,34 +61,49 @@ make run-cli # если make не установлен, тогда напрям�
 
 ```text
 weather-parser-notifier/
+├── data/
+│   └── db/
+│       └── weather.db
 ├── src/
-│   ├── __init__.py
-│   ├── main.py              # Точка входа (CLI/GUI выбор)
-│   ├── cli.py               # Консольная версия
 │   ├── core/
 │   │   ├── __init__.py
-│   │   ├── config_loader.py
 │   │   ├── api_client.py
+│   │   ├── config_loader.py
 │   │   ├── data_parser.py
 │   │   └── weather_service.py
-│   ├── gui/
+│   ├── database/
+│   │   ├── sql/
+│   │   │   └── init.sql
 │   │   ├── __init__.py
-│   │   ├── main_window.py
+│   │   ├── db_manager.py
+│   │   └── models.py
+│   ├── gui/
+│   │   ├── resources/
+│   │   │   ├── backgrounds/
+│   │   │   │   └── bg.png
+│   │   │   └── styles/
+│   │   │       └── main.qss
+│   │   ├── __init__.py
 │   │   ├── constants.py
-│   │   ├── resource_manager.py
-│   │   └── resources/
-│   │       └── styles/
-│   │           └── main.qss
-│   └── utils/
-│       ├── __init__.py
-│       └── pressure_converter.py
+│   │   ├── main_window.py
+│   │   └── resource_manager.py
+│   ├── notifications/
+│   │   ├── __init__.py
+│   │   ├── engine.py
+│   │   └── evaluator.py
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   └── pressure_converter.py
+│   ├── __init__.py
+│   ├── cli.py
+│   └── main.py
 ├── .env.example
 ├── .gitignore
 ├── .pre-commit-config.yaml
 ├── .python-version
 ├── Makefile
-├── README.md
 ├── pyproject.toml
+├── README.md
 ├── requirements.txt
 └── uv.lock
 ```

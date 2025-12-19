@@ -159,11 +159,55 @@ class WeatherWindow(QMainWindow):
         # Используем QTimer для неблокирующего выполнения
         QTimer.singleShot(TIMER_DELAY_MS, self.fetch_weather)
 
+    def display_weather_with_notifications(self, weather_data: WeatherData, notifications: list[str]) -> None:
+        """Отображает данные о погоде и уведомления в интерфейсе."""
+        from src.gui.constants import WEATHER_TEMPLATE
+        from src.utils.pressure_converter import convert_pressure_to_mmhg
+
+        pressure_mmhg = convert_pressure_to_mmhg(weather_data.pressure)
+
+        # Основные данные о погоде с использованием константы
+        weather_text = WEATHER_TEMPLATE.format(
+            city=weather_data.city.upper(),
+            temperature=weather_data.temperature,
+            feels_like=weather_data.feels_like,
+            humidity=weather_data.humidity,
+            pressure_mmhg=pressure_mmhg,
+            pressure_hpa=weather_data.pressure,
+            description=weather_data.description,
+            wind_speed=weather_data.wind_speed,
+        )
+
+        # Добавляем уведомления если они есть
+        if notifications:
+            # Убираем дубликаты уведомлений (если таковые есть)
+            unique_notifications = []
+            seen = set()
+            for notification in notifications:
+                if notification not in seen:
+                    seen.add(notification)
+                    unique_notifications.append(notification)
+
+            weather_text += f"\n\n🔔 АКТИВНЫЕ РЕКОМЕНДАЦИИ ({len(unique_notifications)}):\n"
+            weather_text += "─" * 50  # Другой символ для разделителя
+
+            for i, notification in enumerate(unique_notifications, 1):
+                weather_text += f"\n  {i}. {notification}"
+
+        # Также выводим в консоль для отладки
+        print("\n" + "=" * 50)
+        print("Данные получены через GUI:")
+        print(weather_text)
+        print("=" * 50)
+
+        self.weather_output.setText(weather_text)
+
     def fetch_weather(self) -> None:
         """Получает данные о погоде."""
         try:
-            weather_data = self.weather_service.get_weather()
-            self.display_weather(weather_data)
+            # Используем новый метод с уведомлениями
+            weather_data, notifications = self.weather_service.get_weather_with_notifications()
+            self.display_weather_with_notifications(weather_data, notifications)
             self.status_label.setText(STATUS_SUCCESS)
 
         except Exception as e:

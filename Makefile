@@ -30,8 +30,6 @@ format-check:  ## Check if code is properly formatted
 format:  ## Auto-format code
 	uv run ruff format .
 
-check:  ## Run all checks (lint + format)
-	lint format-check
+check: lint format-check  ## Run all checks (lint + format)
 
-fix:  ## Fix all issues (lint + format)
-	lint-fix format
+fix: lint-fix format  ## Fix all issues (lint + format)
