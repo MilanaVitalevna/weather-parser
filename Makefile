@@ -33,3 +33,10 @@ format:  ## Auto-format code
 check: lint format-check  ## Run all checks (lint + format)
 
 fix: lint-fix format  ## Fix all issues (lint + format)
+
+build:  ## Building the executable file
+	uv run build.py
+
+build-clean:  ## Cleaning Build artifacts
+	rm -rf dist/ build/ *.spec
+	@echo "Артефакты сборки удалены"
